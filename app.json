@@ -5,7 +5,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1890ff",
-    "navigationBarTitleText": "小程序测试",
+    "navigationBarTitleText": "我的小程序",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh": true
   }
