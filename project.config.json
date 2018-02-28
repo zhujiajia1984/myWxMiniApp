@@ -27,7 +27,26 @@
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": []
+			"list": [
+				{
+					"id": -1,
+					"name": "其他小程序打开",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": "1037",
+					"referrerInfo": {
+						"appId": "wx8e2b0d02804dc699",
+						"extraData": "{\"foo\": \"abc\"}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "打开某一页面",
+					"pathName": "pages/index/index",
+					"query": "color=abc",
+					"scene": "1011"
+				}
+			]
 		}
 	}
 }
