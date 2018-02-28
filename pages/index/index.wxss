@@ -1,1 +1,11 @@
 /* pages/index/index.wxss */
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.myBtn{
+  margin-top: 200px;
+}
