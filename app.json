@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1890ff",
+    "navigationBarTitleText": "小程序测试",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
+  }
+}
