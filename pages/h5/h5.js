@@ -1,4 +1,4 @@
-// pages/index/index.js
+// pages/h5/h5.js
 Page({
 
   /**
@@ -8,19 +8,11 @@ Page({
   
   },
 
-  // event handler
-  test:function(){
-    console.log("test");
-    wx.navigateTo({
-      url: '/pages/h5/h5'
-    })
-  },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // console.log(options);
+  
   },
 
   /**
