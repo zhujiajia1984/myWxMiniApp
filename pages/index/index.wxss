@@ -9,3 +9,7 @@
 .myBtn{
   margin-top: 200px;
 }
+
+.myBtn button{
+  margin-bottom: 50px;
+}

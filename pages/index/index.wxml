@@ -1,6 +1,7 @@
 <!--pages/index/index.wxml-->
 <view class='container'>
   <view class='myBtn'>
-     <button bindtap="test">h5页面打开</button>
+    <button type='primary' bindtap="pay">微信支付(0.01)</button>
+    <button bindtap="test">h5页面打开</button>
   </view>
 </view>
