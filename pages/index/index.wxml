@@ -1,8 +1,8 @@
 <!--pages/index/index.wxml-->
 <view class='container'>
   <view class='myBtn'>
-    <!-- <button type='default' open-type='getUserInfo' bindgetuserinfo='userLogin'>用户登录</button> -->
-    <button type='primary' bindtap="pay">微信支付(0.01)</button>
-    <!-- <button bindtap="test">h5页面打开</button> -->
+    <view wx:if="{{token}}">
+      <button type='primary' bindtap="pay">微信支付(0.01)</button>
+    </view>
   </view>
 </view>

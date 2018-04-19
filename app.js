@@ -1,82 +1,55 @@
 App({
-  globalData: {
-    userinfo: null
-  },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 获取token
-  getToken: function (code) {
-    return new Promise((resolve, reject) => {
-      let url = "https://wechat.weiquaninfo.cn/wxAppLogin/token";
-      const requestTask = wx.request({
-        url: url,
-        method: "POST",
-        header: {
-          'content-type': 'application/json',
-        },
-        data: {
-          code: code
-        },
-        success: function (res) {
-          console.log(res.data);
-          return resolve(res.data);
-        },
-        fail: function (error) {
-          return reject(error);
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  // 用户重新登录
+  login: function (cb) {
+    wx.login({
+      success: (res) => {
+        if (res.code) {
+          wx.request({
+            url: "https://wechat.weiquaninfo.cn/wxAppLogin/token",
+            method: "POST",
+            header: {
+              'content-type': 'application/json',
+            },
+            data: {
+              code: res.code
+            },
+            success: function (res) {
+              wx.setStorageSync('token', res.data.token);
+              typeof cb == "function" && cb(res.data.token);
+            },
+            fail: function (error) {
+              console.log(error);
+            }
+          })
+        } else {
+          console.log(`登录失败, ${res.errMsg}`);
         }
-      })
-    })
-  },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 获取用户登录code
-  getCode: function () {
-    return new Promise((resolve, reject) => {
-      wx.login({
-        success: (res) => {
-          if (res.code) {
-            resolve(res.code);
-          } else {
-            reject(`登录失败, ${res.errMsg}`);
-          }
-        },
-        fail: (error) => {
-          reject(error);
-        }
-      })
-    })
-  },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 检查登录态是否过期(小程序的session_key是否过期)
-  checkSession: function () {
-    return new Promise((resolve, reject) => {
-      wx.checkSession({
-        success: () => {
-          //session_key 未过期，并且在本生命周期一直有效
-          resolve("notNeedLogin");
-        },
-        fail: () => {
-          // session_key 已经失效，需要重新执行登录流程
-          resolve("needLogin");
-        }
-      })
+      },
+      fail: (error) => {
+        console.log(error);
+      }
     })
   },
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  // 用户登录流程
-  userLogin: function () {
-    this.checkSession().then((result) => {
-      if (result == "needLogin") {
-        return this.getCode();
-      } else return null;
-    }).then((code) => {
-      if (code) {
-        this.getToken(code);
-      } else return null;
-    }).catch((error) => {
-      console.log(error);
+  // 用户登录
+  userLogin: function (cb) {
+    wx.checkSession({
+      success: () => {
+        // 登录态未过期
+        let token = wx.getStorageSync('token');
+        if (token) {
+          typeof cb == "function" && cb(token);
+        } else {
+          // 重新登录
+          this.login(cb);
+        }
+      },
+      fail: () => {
+        // 重新登录
+        this.login(cb);
+      }
     })
   },
 
@@ -84,7 +57,6 @@ App({
    * 当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
    */
   onLaunch: function (options) {
-    // console.log(options);
   },
 
   /**

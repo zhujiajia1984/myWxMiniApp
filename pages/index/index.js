@@ -8,18 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    token: null,
   },
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  // 打开h5页面
-  test: function () {
-    console.log("test");
-    wx.navigateTo({
-      url: '/pages/h5/h5'
-    })
-  },
-
+  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
   // 获取微信支付的prepay_id
   getPrepayId: function () {
@@ -28,7 +19,8 @@ Page({
         url: "https://wechat.weiquaninfo.cn/wxPay/unifiedorder",
         method: "POST",
         header: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'authorization': this.data.token
         },
         data: {
           body: "智企云-服务"
@@ -98,7 +90,10 @@ Page({
    */
   onLoad: function (options) {
     // 用户登录
-    app.userLogin();
+    app.userLogin((token)=>{
+      // 渲染页面
+      this.setData({token: token});
+    });
   },
 
   /**
