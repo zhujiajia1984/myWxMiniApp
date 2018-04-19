@@ -2,6 +2,7 @@
 <view class='container'>
   <view class='myBtn'>
     <view wx:if="{{token}}">
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
       <button type='primary' bindtap="pay">微信支付(0.01)</button>
     </view>
   </view>
