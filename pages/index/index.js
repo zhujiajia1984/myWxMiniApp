@@ -1,3 +1,6 @@
+//获取应用实例
+const app = getApp();
+
 // pages/index/index.js
 Page({
 
@@ -8,7 +11,8 @@ Page({
 
   },
 
-  // event handler
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 打开h5页面
   test: function () {
     console.log("test");
     wx.navigateTo({
@@ -16,16 +20,85 @@ Page({
     })
   },
 
-  // event handler
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 获取微信支付的prepay_id
+  getPrepayId: function () {
+    return new Promise((resolve, reject) => {
+      const requestTask = wx.request({
+        url: "https://wechat.weiquaninfo.cn/wxPay/unifiedorder",
+        method: "POST",
+        header: {
+          'content-type': 'application/json'
+        },
+        data: {
+          body: "智企云-服务"
+        },
+        success: function (res) {
+          return resolve(res.data);
+        },
+        fail: function (error) {
+          return reject(error);
+        }
+      })
+    })
+  },
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 获取小程序支付API的PaySign
+  getPaySign: function (prepay_id) {
+    return new Promise((resolve, reject) => {
+      const requestTask = wx.request({
+        url: `https://wechat.weiquaninfo.cn/wxPay/md5?prepay_id=${prepay_id}`,
+        method: "GET",
+        success: function (res) {
+          return resolve(res.data);
+        },
+        fail: function (error) {
+          return reject(error);
+        }
+      })
+    })
+  },
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 调取小程序支付API
+  wxPayment: function (data) {
+    return new Promise((resolve, reject) => {
+      wx.requestPayment({
+        timeStamp: data.timeStamp,
+        nonceStr: data.nonceStr,
+        package: data.package,
+        signType: 'MD5',
+        paySign: data.paySign,
+        success: function (res) {
+          return resolve(res.data);
+        },
+        fail: function (error) {
+          return reject(error);
+        }
+      })
+    })
+  },
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 微信支付
   pay: function () {
-    console.log("pay");
+    // 获取微信支付prepay_id
+    this.getPrepayId().then((prepay_id) => {
+      return this.getPaySign(prepay_id);
+    }).then((data) => {
+      return this.wxPayment(data);
+    }).catch((error) => {
+      console.log(error);
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // console.log(options);
+    // 用户登录
+    app.userLogin();
   },
 
   /**
