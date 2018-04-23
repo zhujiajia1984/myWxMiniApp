@@ -49,7 +49,9 @@ Page({
         url: `https://wechat.weiquaninfo.cn/wxPay/md5?prepay_id=${prepay_id}`,
         method: "GET",
         success: function (res) {
-          return resolve(res.data);
+          let result = res.data;
+          result.prepay_id = prepay_id;
+          return resolve(result);
         },
         fail: function (error) {
           return reject(error);
@@ -62,6 +64,7 @@ Page({
   // 调取小程序支付API
   wxPayment: function (data) {
     return new Promise((resolve, reject) => {
+      console.log(data);
       wx.requestPayment({
         timeStamp: data.timeStamp,
         nonceStr: data.nonceStr,
